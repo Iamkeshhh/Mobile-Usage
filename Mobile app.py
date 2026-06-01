@@ -58,3 +58,48 @@ if uploaded_file is not None:
 
 else:
     st.info("Upload CSV File")
+
+st.sidebar.header("🎛 Dashboard Filters")
+
+usage_filter = st.sidebar.multiselect(
+    "Select Mobile Usage Group",
+    options=df["Daily_Mobile_Usage"].unique(),
+    default=df["Daily_Mobile_Usage"].unique()
+)
+
+gpa_range = st.sidebar.slider(
+    "GPA Range",
+    float(df["GPA"].min()),
+    float(df["GPA"].max()),
+    (
+        float(df["GPA"].min()),
+        float(df["GPA"].max())
+    )
+)
+
+sleep_range = st.sidebar.slider(
+    "Sleep Hours",
+    float(df["Sleep_Hours"].min()),
+    float(df["Sleep_Hours"].max()),
+    (
+        float(df["Sleep_Hours"].min()),
+        float(df["Sleep_Hours"].max())
+    )
+)
+
+conc_range = st.sidebar.slider(
+    "Concentration Score",
+    int(df["Concentration_Score"].min()),
+    int(df["Concentration_Score"].max()),
+    (
+        int(df["Concentration_Score"].min()),
+        int(df["Concentration_Score"].max())
+    )
+)
+
+filtered_df = df[
+    (df["Daily_Mobile_Usage"].isin(usage_filter)) &
+    (df["GPA"].between(gpa_range[0], gpa_range[1])) &
+    (df["Sleep_Hours"].between(sleep_range[0], sleep_range[1])) &
+    (df["Concentration_Score"].between(conc_range[0], conc_range[1]))
+]
